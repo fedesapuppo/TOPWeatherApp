@@ -29,5 +29,25 @@ function processWeatherData(data) {
     };
 }
 
+// Form submission handling
+document.getElementById('weatherForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const locationInput = document.getElementById('location');
+    const location = locationInput.value.trim();
+
+    if (!location) {
+        console.error('Please enter a location');
+        return;
+    }
+
+    try {
+        const weatherData = await getWeatherData(location);
+        console.log('Weather Data for', location, ':', weatherData);
+    } catch (error) {
+        console.error('Failed to fetch weather data:', error);
+    }
+});
+
 // Example usage:
 // getWeatherData('Buenos Aires').then(weather => console.log(weather));
