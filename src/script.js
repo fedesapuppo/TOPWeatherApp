@@ -3,6 +3,40 @@ import './styles.css';
 const API_KEY = 'CNPNE6SYB22KNJRWP2J6JBZ65';
 const BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
 
+// Weather icon mapping
+const weatherIcons = {
+    'clear': 'https://cdn-icons-png.flaticon.com/512/3222/3222800.png',
+    'partly-cloudy': 'https://cdn-icons-png.flaticon.com/512/3222/3222803.png',
+    'cloudy': 'https://cdn-icons-png.flaticon.com/512/3222/3222804.png',
+    'rain': 'https://cdn-icons-png.flaticon.com/512/3222/3222805.png',
+    'snow': 'https://cdn-icons-png.flaticon.com/512/3222/3222806.png',
+    'thunderstorm': 'https://cdn-icons-png.flaticon.com/512/3222/3222807.png',
+    'fog': 'https://cdn-icons-png.flaticon.com/512/3222/3222808.png'
+};
+
+function getWeatherIcon(conditions) {
+    const lowerConditions = conditions.toLowerCase();
+
+    if (lowerConditions.includes('clear') || lowerConditions.includes('sunny')) {
+        return weatherIcons['clear'];
+    } else if (lowerConditions.includes('partly cloudy')) {
+        return weatherIcons['partly-cloudy'];
+    } else if (lowerConditions.includes('cloudy') || lowerConditions.includes('overcast')) {
+        return weatherIcons['cloudy'];
+    } else if (lowerConditions.includes('rain') || lowerConditions.includes('drizzle')) {
+        return weatherIcons['rain'];
+    } else if (lowerConditions.includes('snow') || lowerConditions.includes('sleet')) {
+        return weatherIcons['snow'];
+    } else if (lowerConditions.includes('thunder') || lowerConditions.includes('storm')) {
+        return weatherIcons['thunderstorm'];
+    } else if (lowerConditions.includes('fog') || lowerConditions.includes('mist')) {
+        return weatherIcons['fog'];
+    }
+
+    // Default icon
+    return weatherIcons['clear'];
+}
+
 async function getWeatherData(location) {
     try {
         const response = await fetch(`${BASE_URL}/${location}?key=${API_KEY}&unitGroup=metric&lang=es`);
@@ -28,7 +62,8 @@ function processWeatherData(data) {
         currentTemp: currentConditions.temp,
         minTemp: today.tempmin,
         maxTemp: today.tempmax,
-        description: currentConditions.conditions
+        description: currentConditions.conditions,
+        icon: getWeatherIcon(currentConditions.conditions)
     };
 }
 
@@ -39,12 +74,14 @@ function displayWeather(weatherData) {
     const minTemp = document.getElementById('minTemp');
     const maxTemp = document.getElementById('maxTemp');
     const weatherDescription = document.getElementById('weatherDescription');
+    const weatherIcon = document.getElementById('weatherIcon');
 
     locationName.textContent = weatherData.location;
     currentTemp.textContent = Math.round(weatherData.currentTemp);
     minTemp.textContent = Math.round(weatherData.minTemp);
     maxTemp.textContent = Math.round(weatherData.maxTemp);
     weatherDescription.textContent = weatherData.description;
+    weatherIcon.src = weatherData.icon;
 
     weatherDisplay.classList.remove('hidden');
 }
