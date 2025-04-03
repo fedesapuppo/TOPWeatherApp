@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="container">
+        <form id="weatherForm">
+            <div class="form-group">
+                <label for="location">Enter Location:</label>
+                <input type="text" id="location" name="location" required placeholder="e.g., Buenos Aires">
+            </div>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        <div id="weatherDisplay" class="weather-display hidden">
+            <h2 id="locationName"></h2>
+            <div class="weather-info">
+                <div class="current-temp">
+                    <span id="currentTemp"></span>°C
+                </div>
+                <div class="temp-range">
+                    <span>Min: </span><span id="minTemp"></span>°C
+                    <span>Max: </span><span id="maxTemp"></span>°C
+                </div>
+                <div class="description" id="weatherDescription"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
