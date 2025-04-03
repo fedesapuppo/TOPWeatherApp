@@ -10,13 +10,24 @@ async function getWeatherData(location) {
         }
 
         const data = await response.json();
-        console.log('Weather Data:', data);
-        return data;
+        return processWeatherData(data);
     } catch (error) {
         console.error('Error fetching weather data:', error);
         throw error;
     }
 }
 
+function processWeatherData(data) {
+    const currentConditions = data.currentConditions;
+    const today = data.days[0];
+
+    return {
+        currentTemp: currentConditions.temp,
+        minTemp: today.tempmin,
+        maxTemp: today.tempmax,
+        description: currentConditions.conditions
+    };
+}
+
 // Example usage:
-// getWeatherData('Buenos Aires');
+// getWeatherData('Buenos Aires').then(weather => console.log(weather));
